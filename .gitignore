@@ -24,3 +24,7 @@ hs_err_pid*
 
 # Exclude .idea
 .idea/
+
+# Gradle files
+.gradle/
+build/

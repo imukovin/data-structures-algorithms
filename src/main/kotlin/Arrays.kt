@@ -25,12 +25,12 @@ fun main() {
 private fun initArray(): Array<Int> = Array(ARRAY_SIZE) { (0..MAX_ARRAY_VALUE).random() }
 
 private fun bubbleSort(mas: Array<Int>) {
-    for (i in 0..mas.size - 1) {
-        for (j in i..mas.size - 1) {
-            if (mas[i] > mas[j]) {
-                mas[i] = mas[i] + mas[j]
-                mas[j] = mas[i] - mas[j]
-                mas[i] = mas[i] - mas[j]
+    for (i in (mas.size - 1) downTo  0) {
+        for (j in 0 until i) {
+            if (mas[j] > mas[j + 1]) {
+                val a = mas[j]
+                mas[j] = mas[j + 1]
+                mas[j + 1] = a
             }
         }
     }

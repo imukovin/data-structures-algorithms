@@ -1,25 +1,35 @@
+import kotlin.math.sqrt
+
 private const val ARRAY_SIZE = 10
 private const val MAX_ARRAY_VALUE = 100
 
 fun main() {
     // Создание массива
-    val mas = initArray()
-    mas.forEach {
-        print("$it ")
-    }
-    println()
+    val masForBubble = initArray()
+    val masForSelection = initArray()
+
+    printMas("For bubble sort mas: ", masForBubble)
+    printMas("For selection sort mas: ", masForSelection)
+    println("========================Sort results===============================")
 
     // Сортировка пузырьком
-    bubbleSort(mas)
-    mas.forEach {
-        print("$it ")
-    }
-    println()
+    bubbleSort(masForBubble)
+    printMas("Bubble sort: ", masForBubble)
 
+    // Сортировка выбором
+    selectionSort(masForSelection)
+    printMas("Selection sort: ", masForSelection)
+
+    println("========================Search results===============================")
     // Бинарный поиск
     val value = 125
-    val pos = binarySearch(mas, value)
-    println("Binary search: value $value; pos: $pos")
+    val pos = binarySearch(masForBubble, value)
+    println("Binary search: value $value; pos $pos")
+
+    // Jump Search
+    val valueJ = masForBubble[5]
+    val posJ = jumpSearch(masForBubble, valueJ)
+    println("Jump search: value $valueJ; pos $posJ")
 }
 
 private fun initArray(): Array<Int> = Array(ARRAY_SIZE) { (0..MAX_ARRAY_VALUE).random() }
@@ -36,6 +46,20 @@ private fun bubbleSort(mas: Array<Int>) {
     }
 }
 
+private fun selectionSort(mas: Array<Int>) {
+    for (i in (0..mas.size - 2)) {
+        var minInd = i
+        for (j in i..mas.size - 1) {
+            if (mas[minInd] > mas[j]) {
+                minInd = j
+            }
+        }
+        val value = mas[i]
+        mas[i] = mas[minInd]
+        mas[minInd] = value
+    }
+}
+
 private fun binarySearch(mas: Array<Int>, value: Int): Int {
     var position = mas.size / 2 // Текущая позиция для сравнения
     var first = 0 // Граничная позиция элемента слева
@@ -49,4 +73,31 @@ private fun binarySearch(mas: Array<Int>, value: Int): Int {
         position = (first + last) / 2
     }
     return if (first > last) -1 else position
+}
+
+private fun jumpSearch(mas: Array<Int>, value: Int): Int {
+    val step: Int = sqrt(mas.size.toDouble()).toInt()
+    var i = 0
+    while (i < mas.size && mas[i] <= value) {
+        i += step
+    }
+    if (i > mas.size) {
+        return -1
+    }
+    var position = 0
+    for (j in (i - step)..i) {
+        if (mas[j] == value) {
+            position = j
+            break
+        }
+    }
+    return position
+}
+
+private fun printMas(text: String, mas: Array<Int>) {
+    print(text)
+    mas.forEach {
+        print("$it ")
+    }
+    println()
 }
